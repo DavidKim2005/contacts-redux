@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ApiSubscriber, ApiSubscribers, Subscriber } from "../types";
+import { ApiSubscriber, ApiSubscribers, Subscriber, editContact } from "../types";
 import axiosApi from "../axiosApi";
 
 export const fetchContacts = createAsyncThunk<Subscriber[]>(
@@ -28,5 +28,12 @@ export const removeContact = createAsyncThunk<void, string>(
     'todo/removeContact',
     async (contactId) => {
         await axiosApi.delete(`/contacts/${contactId}.json`);
+    },
+);
+
+export const updateContact = createAsyncThunk<void, editContact>(
+    'contacts/updateContact',
+    async ({ contactId, apiSubscriber }) => {
+        await axiosApi.put(`/contacts/${contactId}.json`, apiSubscriber);
     },
 );

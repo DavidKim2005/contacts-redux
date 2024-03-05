@@ -6,7 +6,7 @@ const ContactsHeader = () => {
 
     const toContactsForm = () => {
         navigate('/contactsForm')
-    }
+    };
 
     return (
         <Container className="d-flex justify-content-between align-items-center border-2 border-bottom">
@@ -18,6 +18,6 @@ const ContactsHeader = () => {
             <Button className="mb-2" type="button" onClick={toContactsForm}>Add new contact</Button>
         </Container>
     );
-}
+};
 
 export default ContactsHeader;

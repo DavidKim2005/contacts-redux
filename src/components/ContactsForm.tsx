@@ -1,17 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContactsHeader from "./ContactsHeader";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import ButtonSpinner from "./ButtonSpinner";
 import { ApiSubscriber } from "../types";
-import { createContacts } from "../store/contactsThunks";
+import { createContacts, updateContact } from "../store/contactsThunks";
 
 const ContactsForm = () => {
     const dispatch = useAppDispatch();
     const createLoading = useAppSelector(state => state.contacts.createLoading);
+    const editedSubscriber = useAppSelector(state => state.contacts.editedSubscriber);
     const [subscriberName, setSubscriberName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState(Number);
     const [email, setEmail] = useState('');
     const [imageUrl, setImageUrl] = useState('');
+
+    useEffect(() => {
+        if (editedSubscriber) {
+            setSubscriberName(editedSubscriber.name);
+            setPhoneNumber(editedSubscriber.phoneNumber);
+            setEmail(editedSubscriber.email);
+            setImageUrl(editedSubscriber.photo);
+        };
+    }, [editedSubscriber]);
 
     const onSubmit = (event: React.FormEvent) => {
         event.preventDefault();
@@ -21,8 +31,11 @@ const ContactsForm = () => {
             email: email,
             photo: imageUrl
         };
-
-        dispatch(createContacts(subscriber));
+        if(editedSubscriber) {
+            dispatch(updateContact({ contactId: editedSubscriber.id, apiSubscriber: subscriber }));
+        } else {
+            dispatch(createContacts(subscriber));
+        };
     };
 
     const changeName = (e: React.ChangeEvent<HTMLInputElement>) => setSubscriberName(e.target.value);

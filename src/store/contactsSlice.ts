@@ -7,6 +7,7 @@ interface ContactsState {
     fetchLoading: boolean;
     createLoading: boolean;
     mutatingId: null | string;
+    editedSubscriber: Subscriber | null;
 };
 
 const initialState: ContactsState = {
@@ -45,6 +46,8 @@ const contactsSlice = createSlice({
         }).addCase(removeContact.rejected, (state) => {
             state.mutatingId = null;
         });
+
+
     })
 });
 

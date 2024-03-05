@@ -2,24 +2,35 @@ import React from "react";
 import { Subscriber } from "../types";
 import { useAppDispatch } from "../app/hooks";
 import { fetchContacts, removeContact } from "../store/contactsThunks";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
     subscriber: Subscriber;
     closeModal: () => void;
-    id: string
-}
+    id: string;
+    editContactHandler: (subscriber: Subscriber) => void;
+};
 
-const SubscriberModal: React.FC<Props> = React.memo(({ subscriber, closeModal, id }) => {
+const SubscriberModal: React.FC<Props> = React.memo(({ subscriber, closeModal, id, editContactHandler }) => {
     const dispatch = useAppDispatch();
     const { name, phoneNumber, email, photo } = subscriber;
+    const navigate = useNavigate();
 
     const onRemove = async () => {
         if (window.confirm('Do you really wanna delete?')) {
             await dispatch(removeContact(id));
             closeModal();
             await dispatch(fetchContacts());
-        }
+        };
     };
+
+    const onEdit = () => {
+        closeModal();
+        navigate(`/contactsForm${subscriber.id}`);
+        editContactHandler(subscriber)
+    };
+
+
 
     return (
         <div className="modal-overlay" style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.5)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1050 }}>
@@ -36,7 +47,7 @@ const SubscriberModal: React.FC<Props> = React.memo(({ subscriber, closeModal, i
                     </div>
                     <div className="modal-footer d-flex justify-content-around mb-2" style={{ borderTop: "none" }}>
                         <button type="button" className="btn btn-secondary" onClick={onRemove}>Delete</button>
-                        <button type="button" className="btn btn-primary">Edit</button>
+                        <button type="button" className="btn btn-primary" onClick={onEdit}>Edit</button>
                     </div>
                 </div>
             </div>

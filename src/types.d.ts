@@ -12,3 +12,8 @@ export interface ApiSubscribers {
 export interface Subscriber extends ApiSubscriber {
     id: string;
 };
+
+export interface editContact {
+    contactId: string;
+    apiSubscriber: ApiSubscriber;
+};

@@ -11,17 +11,22 @@ const ContactsList = () => {
     const fetchLoading = useAppSelector(state => state.contacts.fetchLoading);
     const [selectedSubscriber, setSelectedSubscriber] = useState<Subscriber | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editedSubscriber, setEditedSubscriber] = useState<Subscriber | null>(null);
 
     const openModal = (subscriber: Subscriber) => {
         setSelectedSubscriber(subscriber);
         setIsModalOpen(true);
     };
 
+    const editContactHandler = (subscriber: Subscriber) => {
+        setEditedSubscriber(subscriber);
+    };
+
 
     useEffect(() => {
         dispatch(fetchContacts())
-    }, [dispatch])
-
+    }, [dispatch]);
+    
     return fetchLoading ? (<div className="spinner-border" role="status">
     </div>) : (
         <main>
@@ -38,10 +43,11 @@ const ContactsList = () => {
                     </div>
                 ))}
             </div>
-            {isModalOpen && selectedSubscriber && <SubscriberModal 
-            subscriber={selectedSubscriber} 
-            closeModal={() => setIsModalOpen(false)} 
-            id={selectedSubscriber.id}
+            {isModalOpen && selectedSubscriber && <SubscriberModal
+                subscriber={selectedSubscriber}
+                closeModal={() => setIsModalOpen(false)}
+                id={selectedSubscriber.id}
+                editContactHandler={editContactHandler}
             />}
         </main>
     );

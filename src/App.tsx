@@ -10,10 +10,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<ContactsList />} />
-        <Route path='/contactsForm' element={<ContactsForm />} />
+        <Route path='/contactsForm/:id' element={<ContactsForm />} />
       </Routes>
     </BrowserRouter>
-  )
-}
+  );
+};
 
 export default App;
