@@ -1,13 +1,25 @@
 import React from "react";
 import { Subscriber } from "../types";
+import { useAppDispatch } from "../app/hooks";
+import { fetchContacts, removeContact } from "../store/contactsThunks";
 
 interface Props {
     subscriber: Subscriber;
     closeModal: () => void;
+    id: string
 }
 
-const SubscriberModal: React.FC<Props> = ({ subscriber, closeModal }) => {
+const SubscriberModal: React.FC<Props> = React.memo(({ subscriber, closeModal, id }) => {
+    const dispatch = useAppDispatch();
     const { name, phoneNumber, email, photo } = subscriber;
+
+    const onRemove = async () => {
+        if (window.confirm('Do you really wanna delete?')) {
+            await dispatch(removeContact(id));
+            closeModal();
+            await dispatch(fetchContacts());
+        }
+    };
 
     return (
         <div className="modal-overlay" style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", backgroundColor: "rgba(0, 0, 0, 0.5)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1050 }}>
@@ -23,13 +35,13 @@ const SubscriberModal: React.FC<Props> = ({ subscriber, closeModal }) => {
                         <p><b>Email:</b> {email}</p>
                     </div>
                     <div className="modal-footer d-flex justify-content-around mb-2" style={{ borderTop: "none" }}>
-                        <button type="button" className="btn btn-secondary" onClick={closeModal}>Remove</button>
+                        <button type="button" className="btn btn-secondary" onClick={onRemove}>Delete</button>
                         <button type="button" className="btn btn-primary">Edit</button>
                     </div>
                 </div>
             </div>
         </div>
     );
-};
+});
 
 export default SubscriberModal;

@@ -38,9 +38,13 @@ const ContactsList = () => {
                     </div>
                 ))}
             </div>
-            {isModalOpen && selectedSubscriber && <SubscriberModal subscriber={selectedSubscriber} closeModal={() => setIsModalOpen(false)} />}
+            {isModalOpen && selectedSubscriber && <SubscriberModal 
+            subscriber={selectedSubscriber} 
+            closeModal={() => setIsModalOpen(false)} 
+            id={selectedSubscriber.id}
+            />}
         </main>
     );
-}
+};
 
 export default ContactsList;

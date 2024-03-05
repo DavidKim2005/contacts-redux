@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Subscriber } from "../types";
-import { createContacts, fetchContacts } from "./contactsThunks";
+import { createContacts, fetchContacts, removeContact } from "./contactsThunks";
 
 interface ContactsState {
     subscribers: [Subscriber];
@@ -14,7 +14,7 @@ const initialState: ContactsState = {
     fetchLoading: false,
     createLoading: false,
     mutatingId: null,
-}
+};
 
 const contactsSlice = createSlice({
     name: 'contacts',
@@ -36,7 +36,15 @@ const contactsSlice = createSlice({
             state.createLoading = false;
         }).addCase(createContacts.rejected, (state) => {
             state.createLoading = false;
-        })
+        });
+
+        builder.addCase(removeContact.pending, (state, {meta: {arg: contactId}}) => {
+            state.mutatingId = contactId;
+        }).addCase(removeContact.fulfilled, (state) => {
+            state.mutatingId = null;
+        }).addCase(removeContact.rejected, (state) => {
+            state.mutatingId = null;
+        });
     })
 });
 

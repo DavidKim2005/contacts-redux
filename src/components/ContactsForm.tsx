@@ -7,7 +7,7 @@ import { createContacts } from "../store/contactsThunks";
 
 const ContactsForm = () => {
     const dispatch = useAppDispatch();
-    const createLoading = useAppSelector(state => state.contacts.createLoading)
+    const createLoading = useAppSelector(state => state.contacts.createLoading);
     const [subscriberName, setSubscriberName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState(Number);
     const [email, setEmail] = useState('');
@@ -23,12 +23,12 @@ const ContactsForm = () => {
         };
 
         dispatch(createContacts(subscriber));
-    }
+    };
 
-    const changeName = (e: React.ChangeEvent<HTMLInputElement>) => setSubscriberName(e.target.value)
-    const changePhone = (e: React.ChangeEvent<HTMLInputElement>) => setPhoneNumber(e.target.value)
-    const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)
-    const changeImage = (e: React.ChangeEvent<HTMLInputElement>) => setImageUrl(e.target.value)
+    const changeName = (e: React.ChangeEvent<HTMLInputElement>) => setSubscriberName(e.target.value);
+    const changePhone = (e: React.ChangeEvent<HTMLInputElement>) => setPhoneNumber(e.target.value);
+    const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
+    const changeImage = (e: React.ChangeEvent<HTMLInputElement>) => setImageUrl(e.target.value);
 
     return (
         <div>
@@ -81,6 +81,6 @@ const ContactsForm = () => {
             </form>
         </div>
     );
-}
+};
 
 export default ContactsForm;
